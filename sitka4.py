@@ -2,7 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 from datetime import datetime
 
-open_file = open("sitka_weather_2018_simple.csv", "r")
+open_file = open("death_valley_2018_simple.csv", "r")
 
 csv_file = csv.reader(open_file, delimiter=",")
 
@@ -14,11 +14,6 @@ print(type(header_row))
 for index, column_header in enumerate(header_row):
     print(index, column_header)
 
-# testing to convert date from string
-mydate = datetime.strptime('2018-07-01', '%Y-%m-%d')
-print(mydate)
-print(type(mydate))
-
 # -----------------------------------------------------
 
 highs = []
@@ -26,14 +21,18 @@ dates = []
 lows = []
 
 for row in csv_file:
-    highs.append(int(row[5]))
-    the_date = datetime.strptime(row[2], '%Y-%m-%d')
-    dates.append(the_date)
-    lows.append(int(row[6]))
-
-print(highs)
-print(dates)
-print(lows)
+    # try and except allows us to specify which errors we want to skip and continue on
+    try:
+        the_date = datetime.strptime(row[2], '%Y-%m-%d')
+        high = int(row[4])
+        low = int(row[5])
+    except ValueError:
+        # f string method allows us to incorporate variables directly into a string
+        print(f"Missing data for {the_date}")
+    else:
+        highs.append(int(row[4]))
+        lows.append(int(row[5]))
+        dates.append(the_date)
 
 # ----------------------------------------------------
 
